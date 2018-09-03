@@ -71,6 +71,7 @@ double  jacobi (double  *A, double *B,  double *X,  int n,
             for (j = 0; j < n; j++) {
                 sum += (A[i*n + j] * Xold[j]);
 
+                /* Método com if para testar posteriormente. Optou-se pela subtração por questões de desempenho em sistemas grandes */
                 /* if (i != j) { 
                     sum += (A[i*n + j] * X[i]);
                 }*/
@@ -111,6 +112,7 @@ double  jacobi (double  *A, double *B,  double *X,  int n,
     }
 
     /* Caso estoure o número de iterações */
+    printf("O NÚMERO DE MÁXIMO DE ITERAÇÕES FOI ATINGIDO.\n");
 
     *tTotal = timestamp() - tInicio;
     *tIteracao = averageTime(itTimes, itCount);
@@ -122,9 +124,9 @@ double  jacobi (double  *A, double *B,  double *X,  int n,
 
 // Método de Gauss-Seidel
 double  gaussSeidel (double  *A, double *B,  double *X,  int n,
-		     double *tIteracao, double *tTotal)
+             double *tIteracao, double *tTotal)
 {
-        /* Alocar Xold */
+    /* Alocar Xold */
     double *Xold = malloc(sizeof(double) * n);
 
     /* Aloca vetor com os tempos das iterações */
@@ -164,11 +166,11 @@ double  gaussSeidel (double  *A, double *B,  double *X,  int n,
             /* Faz o passo da divisão pra cálculo do novo X */
             /*printf("B[%d] = %f, sum = %f\n", i, B[i], sum);*/
             X[i] = (B[i] - sum) / A[i*n + i];
-        }
 
+        }
         error = calcErroAbsAprox(X, Xold, n);
 
-        printf("Jacobi. Iteração %d: erro de %.14f\n", (itCount+1), error);
+        printf("Gauss-Sidel. Iteração %d: erro de %.14f\n", (itCount+1), error);
 
         /* Controle do tempo da iteração */
         itTimes[itCount] = timestamp() - tIterInicio;
@@ -191,6 +193,7 @@ double  gaussSeidel (double  *A, double *B,  double *X,  int n,
     }
 
     /* Caso estoure o número de iterações */
+    printf("O NÚMERO DE MÁXIMO DE ITERAÇÕES FOI ATINGIDO.\n");
 
     *tTotal = timestamp() - tInicio;
     *tIteracao = averageTime(itTimes, itCount);
